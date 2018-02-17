@@ -134,6 +134,8 @@ class NamedResource(BaseReferenceResource):
         self.name = json['name']
         if 'metadata' in json:
             self.metadata = json['metadata']
+        for key, value in json.items():
+            setattr(self, key, value)
 
 class ObjectResource(NamedResource):
     def __init__(self, name, id=None):
@@ -149,6 +151,13 @@ class PolicyResource(NamedResource):
 
     def get_api_path(self):
         return self._get_api_base() + '/policy/' + self._get_resource_suffix()
+
+class DeviceResource(NamedResource):
+    def __init__(self, name, id=None):
+        super().__init__(name, id)
+
+    def get_api_path(self):
+        return self._get_api_base() + '/devices/' + self._get_resource_suffix()
 
 
 class ContainedPolicyResource(PolicyResource):
